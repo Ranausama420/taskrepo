@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'movieApp/style.css' %}" >
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function search_movie() {
+    let input = document.getElementById('searchbar').value
+    input=input.toLowerCase();
+    let x = document.getElementsByClassName('movies_title');
+    let y = document.getElementsByClassName('content');
+
+    for (i = 0; i < x.length; i++) {
+        if (!x[i].innerHTML.toLowerCase().includes(input)) {
+            x[i].style.display="none";
+            y[i].style.display="none";
+        }
+        else {
+            x[i].style.display="";
+            y[i].style.display="";
+        }
+    }
+}
+
+    </script>
+</head>
+<body>
+<header >
+    <div class="container-fuid" >
+        <div class="row navbar-style align-items-center">
+            <div class="col-md-auto">
+            <h1>Movie listings @ GV Cinema</h1>
+                </div>
+        </div>
+        <div class="row navbar-style align-items-center">
+            <div class="col-md-auto">
+            <nav class="navbar navbar-light">
+  <form class="form-inline">
+    <input class="form-control mr-sm-2 " id="searchbar" onkeyup="search_movie()" type="text" placeholder="Search" aria-label="Search">
+
+  </form>
+</nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section>
+
+    <div class="container-fluid">
+    <div class="row no-gutters movies" id="list">
+        {% for movie in data %}
+        <div class="col-md-auto content">
+        <div class="card movie_card">
+            <a href="{% url 'movieApp:detail' movie.id movie.name %}">
+                <img src="{{movie.imgPath}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title movies_title">{{movie.name}}</h5>
+                    <div class="container">
+                        <div class="row">
+                            <span class="movie_info">{{movie.duration}}mins</span>
+                        </div>
+                    </div>
+                    <!-- Used Django variable in css for stars to show user ratings in stars-->
+                    <span class="movie_info">
+                        Ratings:
+                        <div class="stars-outer">
+                            <div class="stars-inner" style="width: calc(20% *{{movie.userRating}});"></div></div>
+                        {{movie.userRating}}/5
+                    </span>
+                </div>
+            </a>
+		</div>
+        </div>
+        {% endfor %}
+
+    </div>
+    </div>
+
+</section>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+</html>
